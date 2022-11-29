@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+
+<!--指定namespace为UserMapper接口所在的路径-->
+<mapper namespace="org.example.mapper.UserMapper">
+
+
+    <sql id="selectUser">
+        select * from user
+    </sql>
+
+    <!--方法名和参数要和UserMapper中对应-->
+
+    <!--删除操作-->
+    <delete id="delete" parameterType="int">
+        delete from user where id=#{abc}
+    </delete>
+
+    <!--修改操作-->
+    <update id="update" parameterType="org.example.domain.User">
+        update user set username=#{username},password=#{password} where id=#{id}
+    </update>
+
+    <!--插入操作-->
+    <insert id="save" parameterType="org.example.domain.User">
+        insert into user(username, password, birthday) values(#{username},#{password}, #{birthday})
+    </insert>
+
+    <!--查询操作-->
+    <select id="findAll" resultType="user">
+        select * from user
+    </select>
+
+    <!--根据id进行查询-->
+    <select id="findById" resultType="user" parameterType="int">
+        select * from user where id=#{id}
+    </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--动态sql-->
+    <select id="findByCondition" resultType="user" parameterType="user">
+        <include refid="selectUser"></include>
+        <where>
+            <if test="id != 0">
+                and id = #{id}
+            </if>
+            <if test="username != null">
+                and username = #{username}
+            </if>
+            <if test="password != null">
+                and password = #{password}
+            </if>
+        </where>
+    </select>
+
+    <select id="findByIds" resultType="user" parameterType="list">
+        <include refid="selectUser"></include>
+        <where>
+            <foreach collection="list" item="id" open="id in (" close=")" separator=",">
+                #{id}
+            </foreach>
+        </where>
+    </select>
+
+</mapper>

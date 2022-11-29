@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--
+    <bean id="userDao" class="org.example.dao.impl.UserDaoImpl" scope="singleton" init-method="init" destroy-method="destroy"></bean>
+    -->
+
+    <!--
+    <bean id="userDao" class="org.example.factory.BeanFactory" factory-method="getUserDao"></bean>
+    -->
+
+    <!--
+    <bean id="factory" class="org.example.factory.BeanFactory"></bean>
+    <bean id="userDao" factory-bean="factory" factory-method="getUserDao2"></bean>
+    -->
+
+    <bean id="user1" class="org.example.domain.User">
+        <property name="name" value="kangkang"></property>
+        <property name="address" value="beijing"></property>
+    </bean>
+
+    <bean id="user2" class="org.example.domain.User">
+        <property name="name" value="xiaohong"></property>
+        <property name="address" value="shanghai"></property>
+    </bean>
+
+    <bean id="userDao" class="org.example.dao.impl.UserDaoImpl">
+        <property name="name" value="zhangshan"></property>
+        <property name="stringList">
+            <list>
+                <value>fdf</value>
+                <value>dsfjdos</value>
+                <value>fdjio</value>
+            </list>
+        </property>
+        <property name="userMap">
+            <map>
+                <entry key="k1" value-ref="user1"></entry>
+                <entry key="k2" value-ref="user2"></entry>
+            </map>
+        </property>
+        <property name="properties">
+            <props>
+                <prop key="aff">fdsf</prop>
+                <prop key="fdfd">dsfaf</prop>
+            </props>
+        </property>
+    </bean>
+    <!--
+    <bean id="userService" class="org.example.service.impl.UserServiceImpl">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+    -->
+
+    <bean id="userService" class="org.example.service.impl.UserServiceImpl">
+        <constructor-arg name="userDao" ref="userDao"></constructor-arg>
+    </bean>
+</beans>

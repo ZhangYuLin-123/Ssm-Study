@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+
+<!--指定namespace为UserMapper接口所在的路径-->
+<mapper namespace="org.example.mapper.UserMapper">
+
+
+    <resultMap id="findMap" type="org.example.domain.User">
+        <id column="id" property="id"></id>
+        <result column="username" property="username" />
+        <result column="password" property="password" />
+        <result column="birthday" property="birthday" />
+
+        <collection property="orderList" ofType="org.example.domain.Order">
+            <id column="oid" property="id"/>
+            <result column="ordertime" property="ordertime"/>
+            <result column="total" property="total"/>
+        </collection>
+
+        <collection property="roleList" ofType="org.example.domain.Role">
+            <id column="rid" property="id"/>
+            <result column="roleName" property="roleName"/>
+            <result column="roleDesc" property="roleDesc"/>
+        </collection>
+    </resultMap>
+
+
+    <!--查询操作-->
+    <select id="findAll" resultMap="findMap">
+        select *, o.id oid, r.id rid from user u
+        left join t_order o on u.id = o.user_id
+        left join sys_user_role ur on u.id = ur.userId
+        left join sys_role r on ur.roleId = r.id
+    </select>
+
+
+
+</mapper>

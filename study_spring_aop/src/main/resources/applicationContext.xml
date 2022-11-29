@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+    <!-- 目标对象 -->
+    <bean id="target" class="org.example.aop.Target"></bean>
+
+    <!-- 切面对象 -->
+    <bean id="myAspect" class="org.example.aop.Advice"></bean>
+
+    <!--配置织入：告诉spring框架 哪些方法(切点)需要进行哪些增强(前置、后置...)-->
+    <aop:config>
+        <!--声明切面-->
+        <aop:aspect ref="myAspect">
+            <!--提取切点表达式-->
+            <aop:pointcut id="myPointcut" expression="execution(* org.example.aop.Target.*(..))"/>
+            <aop:before method="before" pointcut-ref="myPointcut"></aop:before>
+            <aop:after-returning method="afterReturning" pointcut-ref="myPointcut"></aop:after-returning>
+            <aop:around method="around" pointcut-ref="myPointcut"></aop:around>
+            <aop:after-throwing method="afterThrowing" pointcut-ref="myPointcut"></aop:after-throwing>
+            <aop:after method="after" pointcut-ref="myPointcut"></aop:after>
+
+            <!--切面：切点+通知-->
+            <!--<aop:after method="afterReturning" pointcut="execution(public void org.example.aop.Target.save())"></aop:after>-->
+        </aop:aspect>
+    </aop:config>
+</beans>

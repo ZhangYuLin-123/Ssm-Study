@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+
+
+<!--指定namespace为OrderMapper接口所在的路径-->
+<mapper namespace="org.example.dao.OrderMapper">
+
+    <resultMap id="findMap" type="org.example.domain.Order">
+        <id column="id" property="id"></id>
+        <result column="ordertime" property="ordertime"></result>
+        <result column="total" property="total"></result>
+        <association property="user" javaType="org.example.domain.User">
+            <id column="uid" property="id"></id>
+            <result column="username" property="username"></result>
+            <result column="password" property="password"></result>
+            <result column="birthday" property="birthday"></result>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="findMap">
+        select *, u.id uid
+        from t_order o
+            left join user u on o.user_id = u.id
+    </select>
+
+
+</mapper>
